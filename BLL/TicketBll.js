@@ -1,5 +1,4 @@
 const dbExecuter = require('../DAL/SqlExecuter.js');
-const { uuid } = require('uuidv4');
 
 let tableName = "Tickets";
 
@@ -19,10 +18,10 @@ const Insert = (handlerGroupId, costumerGroupId, costumerUserName, description, 
 
     let seconds = date_ob.getSeconds();
 
-    let date = year + "-" + month + "-" + date + " " + hours + ":" + minutes + ":" + seconds;
+    let dateOpen = year + "-" + month + "-" + date + " " + hours + ":" + minutes + ":" + seconds;
     
     return dbExecuter(`INSERT INTO ${tableName} ( HandlerGroupId, CostumerGroupId, CostumerUserName, HandlerUserName, Description, RoomNumber, OpenedDate, StatusId, PhoneNumber)
-                VALUES (${handlerGroupId}, ${costumerGroupId}, ${costumerUserName}, NULL, ${description}, ${roomNumber}, ${date}, 1, ${phoneNumber})`);
+                VALUES (${handlerGroupId}, ${costumerGroupId}, ${costumerUserName}, NULL, ${description}, ${roomNumber}, ${dateOpen}, 1, ${phoneNumber})`);
 }
 
 exports.Insert = Insert;
