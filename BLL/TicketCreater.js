@@ -24,8 +24,6 @@ const Insert=(handlerGroupId, costumerGroupId, costumerUserName, description, ro
 
     let openedDate = year + "-" + month + "-" + date;
     console.log(openedDate);
-    // let query = `INSERT INTO ${tableName} ( HandlerGroupId, CostumerGroupId, CostumerUserName, HandlerUserName, Description, RoomNumber, OpenedDate, StatusId, PhoneNumber)
-    // VALUES (${handlerGroupId}, ${costumerGroupId}, ${costumerUserName}, NULL, ${description}, ${roomNumber}, ${dateOpen}, 1, ${phoneNumber})`;
     let query = CreationQuery(handlerGroupId, costumerGroupId, costumerUserName, description, roomNumber, openedDate, phoneNumber)
     console.log("executing query: " + query);
     return db.Execute(query);
