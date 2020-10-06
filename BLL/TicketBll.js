@@ -1,9 +1,11 @@
-const dbExecuter = require('../DAL/SqlExecuter.js');
+const dbExecuter = require('../DAL/sqlHandler.js');
+const db = new dbExecuter();
 
 let tableName = "Tickets";
 
 
-const Insert = (handlerGroupId, costumerGroupId, costumerUserName, description, roomNumber, phoneNumber ) =>{
+const Insert=(handlerGroupId, costumerGroupId, costumerUserName, description, roomNumber, phoneNumber)=>
+{
     let date_ob = new Date();
 
     let date = ("0" + date_ob.getDate()).slice(-2);
@@ -12,16 +14,25 @@ const Insert = (handlerGroupId, costumerGroupId, costumerUserName, description, 
 
     let year = date_ob.getFullYear();
 
-    let hours = date_ob.getHours();
+    // let hours = date_ob.getHours();
 
-    let minutes = date_ob.getMinutes();
+    // let minutes = date_ob.getMinutes();
 
-    let seconds = date_ob.getSeconds();
+    // let seconds = date_ob.getSeconds();
 
-    let dateOpen = year + "-" + month + "-" + date + " " + hours + ":" + minutes + ":" + seconds;
-    
-    return dbExecuter(`INSERT INTO ${tableName} ( HandlerGroupId, CostumerGroupId, CostumerUserName, HandlerUserName, Description, RoomNumber, OpenedDate, StatusId, PhoneNumber)
-                VALUES (${handlerGroupId}, ${costumerGroupId}, ${costumerUserName}, NULL, ${description}, ${roomNumber}, ${dateOpen}, 1, ${phoneNumber})`);
+    // let dateOpen = year + "-" + month + "-" + date + " " + hours + ":" + minutes + ":" + seconds;
+
+    let openedDate = year + "-" + month + "-" + date;
+    console.log(openedDate);
+    // let query = `INSERT INTO ${tableName} ( HandlerGroupId, CostumerGroupId, CostumerUserName, HandlerUserName, Description, RoomNumber, OpenedDate, StatusId, PhoneNumber)
+    // VALUES (${handlerGroupId}, ${costumerGroupId}, ${costumerUserName}, NULL, ${description}, ${roomNumber}, ${dateOpen}, 1, ${phoneNumber})`;
+    let query = CreationQuery(handlerGroupId, costumerGroupId, costumerUserName, description, roomNumber, openedDate, phoneNumber)
+    console.log("executing query: " + query);
+    return db.Execute(query);
 }
 
-exports.Insert = Insert;
+let CreationQuery = (handlerGroupId, costumerGroupId, costumerUserName, description, roomNumber, openedDate, phoneNumber)=>{
+    return `EXEC InsertTicket @HandlerGroupId = ${handlerGroupId}, @CostumerGroupId = ${costumerGroupId}, @CostumerUserName  = ${costumerUserName}, @Description = ${description}, @RoomNumber = ${roomNumber}, @OpenedDate = '${openedDate}', @PhoneNumber = ${phoneNumber};`;
+}
+
+module.exports.Insert = Insert;
