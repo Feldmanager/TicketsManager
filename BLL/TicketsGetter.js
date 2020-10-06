@@ -21,6 +21,9 @@ let GetQuery = (params)=>{
         console.log(key + " , " + params[key]);
         query += ` @${key} = ${params[key]},`;
     });
+    if (query[query.length - 1] != ','){
+        return query
+    }
     return query.slice(0, query.length -1);
 }
 
