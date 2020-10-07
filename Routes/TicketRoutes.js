@@ -1,5 +1,6 @@
 const express = require('express');
 const ticketPreformer = require('../BLL/TicketHandler');
+const { param } = require('./TicketsRouter');
 
 const router = express.Router();
 
@@ -22,9 +23,7 @@ router.post('/',async (req, res) =>{
 
 router.delete('/:ticketId',async (req, res) =>{
     try{
-        console.log(req.params);
         let id = req.params.ticketId;
-        console.log(id);
         res.status(200).send(await ticketPreformer.Delete(id));
     }
     catch(err){
@@ -33,6 +32,15 @@ router.delete('/:ticketId',async (req, res) =>{
     }
 })
 
+router.put('/:ticketId', async (req, res) => {
+    let params = {};
+    params['TicketId'] = req.params.ticketId;
+    if(req.query.statusId) {params['StatusId'] = req.query.statusId;};
+    if(req.query.handlerGroupId) {params['HandlerGroupId'] = req.query.handlerGroupId;};
+    if(req.query.roomNumber) {params['RoomNumber'] = req.query.roomNumber;};
+    if(req.query.description) {params['Description'] = req.query.description;};
+    res.status(200).send(await ticketPreformer.Put(params));
+})
 
 
 

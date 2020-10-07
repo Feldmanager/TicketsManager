@@ -1,8 +1,6 @@
 let {SqlHandler, UserInvalidInputError , Validator} = require('commonframework');
 const db = new SqlHandler();
 
-let tableName = "Tickets";
-
 
 const Insert= async (handlerGroupId, costumerGroupId, costumerUserName, description, roomNumber)=>
 {
@@ -37,5 +35,24 @@ let DeleteQuery = (ticketId)=>
     return `EXEC DeleteTicketById @TicketId = ${ticketId}`;
 }
 
+let Put = async  (id, params) =>{
+    let query = PutQuery(id, params);
+    console.log(query);
+    return await db.Execute(query);
+}
+
+let PutQuery = (params) =>{
+    let query = 'EXEC ChangeTicket';
+    Object.keys(params).forEach(key =>{
+        // console.log(key + " , " + params[key]);
+        query += ` @${key} = ${params[key]},`;
+    });
+    if (query[query.length - 1] != ','){
+        return query
+    }
+    return query.slice(0, query.length -1);
+}
+
 module.exports.Insert = Insert;
 module.exports.Delete = Delete;
+module.exports.Put = Put;
