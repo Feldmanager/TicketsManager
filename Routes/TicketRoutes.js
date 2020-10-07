@@ -1,6 +1,5 @@
 const express = require('express');
 const ticketPreformer = require('../BLL/TicketHandler');
-const { param } = require('./TicketsRouter');
 
 const router = express.Router();
 
