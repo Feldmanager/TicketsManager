@@ -20,6 +20,7 @@
   "homepage": "https://github.com/Feldmanager/TicketsManager#readme",
   "dependencies": {
     "commonframework": "git+https://github.com/Feldmanager/CommonFramework.git#basicCommon",
+    "cors": "^2.8.5",
     "express": "^4.17.1",
     "mssql": "^6.2.3",
     "nodemon": "^2.0.4",
