@@ -4,7 +4,7 @@ const ticketPreformer = require('../BLL/TicketCreater');
 const router = express.Router();
 
 
-router.post('/',(req, res) =>{
+router.post('/',async (req, res) =>{
     try{
         let body = req.body;
         let handlerGroupId = body.handlerGroupId;
@@ -12,8 +12,7 @@ router.post('/',(req, res) =>{
         let costumerUserId = body.costumerUserId;
         let description = body.description;
         let roomNumber = body.roomNumber;
-        let phoneNumber = body.phoneNumber;
-        res.status(200).send(ticketPreformer.Insert(handlerGroupId, costumerGroupId, costumerUserId, description, roomNumber, phoneNumber));
+        res.status(200).send(await ticketPreformer.Insert(handlerGroupId, costumerGroupId, costumerUserId, description, roomNumber));
     }
     catch(err){
         console.log(err);

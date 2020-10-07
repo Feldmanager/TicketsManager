@@ -24,13 +24,13 @@ const Insert=(handlerGroupId, costumerGroupId, costumerUserName, description, ro
 
     let openedDate = year + "-" + month + "-" + date;
     console.log(openedDate);
-    let query = CreationQuery(handlerGroupId, costumerGroupId, costumerUserName, description, roomNumber, openedDate, phoneNumber)
+    let query = CreationQuery(handlerGroupId, costumerGroupId, costumerUserName, description, roomNumber, openedDate)
     console.log("executing query: " + query);
     return db.Execute(query);
 }
 
-let CreationQuery = (handlerGroupId, costumerGroupId, costumerUserName, description, roomNumber, openedDate, phoneNumber)=>{
-    return `EXEC InsertTicket @HandlerGroupId = ${handlerGroupId}, @CostumerGroupId = ${costumerGroupId}, @CostumerUserName  = ${costumerUserName}, @Description = ${description}, @RoomNumber = ${roomNumber}, @OpenedDate = '${openedDate}', @PhoneNumber = ${phoneNumber};`;
+let CreationQuery = (handlerGroupId, costumerGroupId, costumerUserName, description, roomNumber, openedDate)=>{
+    return `EXEC InsertTicket @HandlerGroupId = ${handlerGroupId}, @CostumerGroupId = ${costumerGroupId}, @CostumerUserName  = ${costumerUserName}, @Description = ${description}, @RoomNumber = ${roomNumber}, @OpenedDate = '${openedDate}';`;
 }
 
 module.exports.Insert = Insert;
