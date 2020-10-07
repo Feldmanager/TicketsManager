@@ -1,5 +1,5 @@
 const express = require('express');
-const ticketPreformer = require('../BLL/TicketCreater');
+const ticketPreformer = require('../BLL/TicketHandler');
 
 const router = express.Router();
 
@@ -19,6 +19,20 @@ router.post('/',async (req, res) =>{
         res.status(400).send(err);
     }
 })
+
+router.delete('/:ticketId',async (req, res) =>{
+    try{
+        console.log(req.params);
+        let id = req.params.ticketId;
+        console.log(id);
+        res.status(200).send(await ticketPreformer.Delete(id));
+    }
+    catch(err){
+        console.log(err);
+        res.status(400).send(err);
+    }
+})
+
 
 
 

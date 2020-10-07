@@ -1,10 +1,10 @@
-const dbExecuter = require('../DAL/sqlHandler.js');
-const db = new dbExecuter();
+let {SqlHandler, UserInvalidInputError , Validator} = require('commonframework');
+const db = new SqlHandler();
 
 let tableName = "Tickets";
 
 
-const Insert=(handlerGroupId, costumerGroupId, costumerUserName, description, roomNumber, phoneNumber)=>
+const Insert= async (handlerGroupId, costumerGroupId, costumerUserName, description, roomNumber)=>
 {
     let date_ob = new Date();
 
@@ -14,23 +14,28 @@ const Insert=(handlerGroupId, costumerGroupId, costumerUserName, description, ro
 
     let year = date_ob.getFullYear();
 
-    // let hours = date_ob.getHours();
-
-    // let minutes = date_ob.getMinutes();
-
-    // let seconds = date_ob.getSeconds();
-
-    // let dateOpen = year + "-" + month + "-" + date + " " + hours + ":" + minutes + ":" + seconds;
-
     let openedDate = year + "-" + month + "-" + date;
     console.log(openedDate);
     let query = CreationQuery(handlerGroupId, costumerGroupId, costumerUserName, description, roomNumber, openedDate)
     console.log("executing query: " + query);
-    return db.Execute(query);
+    return await db.Execute(query);
 }
 
 let CreationQuery = (handlerGroupId, costumerGroupId, costumerUserName, description, roomNumber, openedDate)=>{
     return `EXEC InsertTicket @HandlerGroupId = ${handlerGroupId}, @CostumerGroupId = ${costumerGroupId}, @CostumerUserName  = ${costumerUserName}, @Description = ${description}, @RoomNumber = ${roomNumber}, @OpenedDate = '${openedDate}';`;
 }
 
+let Delete = async (ticketId)=>
+{
+    let query = DeleteQuery(ticketId);
+    console.log("executing query: " + query);
+    return await db.Execute(query);
+}
+
+let DeleteQuery = (ticketId)=>
+{
+    return `EXEC DeleteTicketById @TicketId = ${ticketId}`;
+}
+
 module.exports.Insert = Insert;
+module.exports.Delete = Delete;
