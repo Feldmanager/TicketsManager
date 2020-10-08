@@ -36,6 +36,7 @@ router.put('/:ticketId', async (req, res) => {
     params['TicketId'] = req.params.ticketId;
     if(req.query.statusId) {params['StatusId'] = req.query.statusId;};
     if(req.query.handlerGroupId) {params['HandlerGroupId'] = req.query.handlerGroupId;};
+    if(req.query.costumerGroupId) {params['CostumerGroupId'] = req.query.costumerGroupId;};
     if(req.query.roomNumber) {params['RoomNumber'] = req.query.roomNumber;};
     if(req.query.description) {params['Description'] = req.query.description;};
     res.status(200).send(await ticketPreformer.Put(params));
