@@ -7,7 +7,7 @@ const router = express.Router();
 router.get('/:statusId',async (req, res) =>{
     try{
         let statusId = req.params.statusId;
-        res.status(200).send(await statusGetter.GetById(statusId).recordset);
+        res.status(200).send(await statusGetter.GetById(statusId));
     }
     catch(err){
         console.log(err);

@@ -5,14 +5,16 @@ let GetById = async (statusId)=>
 {
     let query = SelectQuery(statusId);
     console.log("executing query: " + query);
-    return await db.Execute(query);
+    let results = await db.Execute(query);
+    return results.recordset;
 }
 
 let GetAllStatus = async ()=>
 {
     let query = SelectAllQuery();
     console.log("executing query: " + query);
-    return await db.Execute(query);
+    let results = await db.Execute(query);
+    return results.recordset;
 }
 
 let SelectAllQuery = ()=>
