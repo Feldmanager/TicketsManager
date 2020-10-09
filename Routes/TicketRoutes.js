@@ -1,5 +1,6 @@
 const express = require('express');
 const ticketPreformer = require('../BLL/TicketHandler');
+const commentRouter = require("./CommentRouter");
 
 const router = express.Router();
 
@@ -42,6 +43,7 @@ router.put('/:ticketId', async (req, res) => {
     res.status(200).send(await ticketPreformer.Put(params));
 })
 
+router.use('/:ticketId/Comment', commentRouter);
 
 
 module.exports = router;

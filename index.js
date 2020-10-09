@@ -1,7 +1,9 @@
 const express = require('express');
 const ticketRouter = require("./Routes/TicketRoutes.js");
 const ticketsRouter = require("./Routes/TicketsRouter.js");
-const statusRouter = require("./Routes/StatusRouter.js")
+const statusRouter = require("./Routes/StatusRouter.js");
+const commentRouter = require('./Routes/CommentRouter.js')
+const commentsRouter = require('./Routes/CommentsRouter.js')
 const cors = require("cors")
 var corsOptions = {
     origin: [
@@ -28,6 +30,8 @@ app.use(express.json());
 app.use("/Ticket", ticketRouter);
 app.use("/Tickets", ticketsRouter);
 app.use("/Status", statusRouter);
+app.use('/Ticket/Comment', commentRouter);
+app.use('/Ticket/Comments', commentsRouter);
 
 
 let server = app.listen(3000, () => console.log('Listening on port 3000...'));
