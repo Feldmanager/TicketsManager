@@ -20,7 +20,7 @@ const Insert= async (handlerGroupId, costumerGroupId, costumerUserName, descript
 }
 
 let CreationQuery = (handlerGroupId, costumerGroupId, costumerUserName, description, roomNumber, openedDate)=>{
-    return `EXEC InsertTicket @HandlerGroupId = ${handlerGroupId}, @CostumerGroupId = ${costumerGroupId}, @CostumerUserName  = ${costumerUserName}, @Description = ${description}, @RoomNumber = ${roomNumber}, @OpenedDate = '${openedDate}';`;
+    return `EXEC InsertTicket @HandlerGroupId = ${handlerGroupId}, @CostumerGroupId = ${costumerGroupId}, @CostumerUserName  = '${costumerUserName}', @Description = '${description}', @RoomNumber = '${roomNumber}', @OpenedDate = '${openedDate}';`;
 }
 
 let Delete = async (ticketId)=>
@@ -45,7 +45,7 @@ let PutQuery = (params) =>{
     let query = 'EXEC ChangeTicket';
     Object.keys(params).forEach(key =>{
         // console.log(key + " , " + params[key]);
-        query += ` @${key} = ${params[key]},`;
+        query += ` @${key} = '${params[key]}',`;
     });
     if (query[query.length - 1] != ','){
         return query
