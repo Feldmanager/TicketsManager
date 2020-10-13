@@ -44,6 +44,9 @@ app.use("/Tickets", ticketsRouter);
 app.use("/Status", statusRouter);
 app.use('/Ticket/Comment', commentRouter);
 app.use('/Ticket/Comments', commentsRouter);
+app.get('/sainitys',async(req, res) =>{
+  res.status(200).send();
+})
 
 
 let server = app.listen(3000, () => console.log('Listening on port 3000...'));
