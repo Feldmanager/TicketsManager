@@ -11,14 +11,15 @@ router.post('/',async (req, res) =>{
     try{
         let params = {};
         let body = req.body;
-        params.handlerGroupId = body.handlerGroupId;
-        params.costumerGroupId = body.costumerGroupId;
-        params.costumerUserId = body.costumerUserId;
-        params.description = body.description;
-        params.roomNumber = body.roomNumber;
+        params.handlerGroupId = body.handlerGroupId.toString();
+        params.costumerGroupId = body.costumerGroupId.toString();
+        params.costumerUserName = body.costumerUserId.toString();
+        params.description = body.description.toString();
+        params.roomNumber = body.roomNumber.toString();
         res.status(200).send(await ticketPreformer.Insert(params));
     }
     catch (err) {
+        console.log(err);
         if (err instanceof UserInvalidInputError) {
             res.status(404).send({ errorContent: err.message });
         }

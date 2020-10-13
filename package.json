@@ -25,6 +25,7 @@
     "jsonwebtoken": "^8.5.1",
     "mssql": "^6.2.3",
     "nodemon": "^2.0.4",
-    "uuidv4": "^6.2.4"
+    "uuidv4": "^6.2.4",
+    "xregexp": "^4.3.0"
   }
 }

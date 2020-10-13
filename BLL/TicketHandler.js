@@ -2,8 +2,9 @@ let {SqlHandler, UserInvalidInputError , Validator} = require('commonframework')
 const db = new SqlHandler();
 
 
-const Insert= async (handlerGroupId, costumerGroupId, costumerUserName, description, roomNumber)=>
+const Insert= async (params)=>
 {
+    Validator(params);
     let date_ob = new Date();
 
     let date = ("0" + date_ob.getDate()).slice(-2);
@@ -13,19 +14,19 @@ const Insert= async (handlerGroupId, costumerGroupId, costumerUserName, descript
     let year = date_ob.getFullYear();
 
     let openedDate = year + "-" + month + "-" + date;
-    console.log(openedDate);
-    let query = CreationQuery(handlerGroupId, costumerGroupId, costumerUserName, description, roomNumber, openedDate)
+    let query = CreationQuery(params.handlerGroupId, params.costumerGroupId, params.costumerUserName, params.description, params.roomNumber, openedDate)
     console.log("executing query: " + query);
     return await db.Execute(query);
 }
 
-let CreationQuery = (handlerGroupId, costumerGroupId, costumerUserName, description, roomNumber, openedDate)=>{
+let CreationQuery = (handlerGroupId, costumerGroupId, costumerUserName, description, roomNumber, openedDate) =>{
     return `EXEC InsertTicket @HandlerGroupId = ${handlerGroupId}, @CostumerGroupId = ${costumerGroupId}, @CostumerUserName  = '${costumerUserName}', @Description = '${description}', @RoomNumber = '${roomNumber}', @OpenedDate = '${openedDate}';`;
 }
 
-let Delete = async (ticketId)=>
+let Delete = async (params)=>
 {
-    let query = DeleteQuery(ticketId);
+    Validator(params);
+    let query = DeleteQuery(params.ticketId);
     console.log("executing query: " + query);
     return await db.Execute(query);
 }
@@ -35,8 +36,9 @@ let DeleteQuery = (ticketId)=>
     return `EXEC DeleteTicketById @TicketId = ${ticketId}`;
 }
 
-let Put = async  (id, params) =>{
-    let query = PutQuery(id, params);
+let Put = async  (params) =>{
+    Validator(params);
+    let query = PutQuery(params);
     console.log(query);
     return await db.Execute(query);
 }
