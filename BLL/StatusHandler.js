@@ -1,9 +1,9 @@
 let {SqlHandler, UserInvalidInputError , Validator} = require('commonframework');
 const db = new SqlHandler();
 
-let GetById = async (statusId)=>
+let GetById = async (params)=>
 {
-    let query = SelectQuery(statusId);
+    let query = SelectQuery(params.statusId);
     console.log("executing query: " + query);
     let results = await db.Execute(query);
     return results.recordset;

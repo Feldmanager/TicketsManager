@@ -1,20 +1,27 @@
 const express = require('express');
 const commentPreformer = require('../BLL/CommentHandler');
+let { UserInvalidInputError} = require('commonframework');
+
 
 const router = express.Router();
 
 
 router.post('/:ticketId',async (req, res) =>{
     try{
-        let ticketId = req.params.ticketId;
+        let params = {};
         let body = req.body;
-        let comment = body.comment;
-        let userName = body.userName;
-        res.status(200).send(await commentPreformer.Insert(ticketId, comment, userName));
+        params.ticketId = req.params.ticketId;
+        params.comment = body.comment;
+        params.userName = body.userName;
+        res.status(200).send(await commentPreformer.Insert(params));
     }
-    catch(err){
-        console.log(err);
-        res.status(400).send(err);
+    catch (err) {
+        if (err instanceof UserInvalidInputError) {
+            res.status(404).send({ errorContent: err.message });
+        }
+        else {
+            res.status(500).send({ errorContent: err.message });
+        }
     }
 })
 

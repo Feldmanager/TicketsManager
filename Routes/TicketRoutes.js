@@ -1,65 +1,76 @@
 const express = require('express');
 const ticketPreformer = require('../BLL/TicketHandler');
 const {Permit} = require('commonframework');
+let { UserInvalidInputError} = require('commonframework');
+
 
 const router = express.Router();
 
 
 router.post('/',async (req, res) =>{
     try{
+        let params = {};
         let body = req.body;
-        let handlerGroupId = body.handlerGroupId;
-        let costumerGroupId = body.costumerGroupId;
-        let costumerUserId = body.costumerUserId;
-        let description = body.description;
-        let roomNumber = body.roomNumber;
-        res.status(200).send(await ticketPreformer.Insert(handlerGroupId, costumerGroupId, costumerUserId, description, roomNumber));
+        params.handlerGroupId = body.handlerGroupId;
+        params.costumerGroupId = body.costumerGroupId;
+        params.costumerUserId = body.costumerUserId;
+        params.description = body.description;
+        params.roomNumber = body.roomNumber;
+        res.status(200).send(await ticketPreformer.Insert(params));
     }
-    catch(err){
-        console.log(err);
-        res.status(400).send(err);
+    catch (err) {
+        if (err instanceof UserInvalidInputError) {
+            res.status(404).send({ errorContent: err.message });
+        }
+        else {
+            res.status(500).send({ errorContent: err.message });
+        }
     }
 })
 
 router.delete('/:ticketId',Permit("Admin", "Makas", "Staff"),async (req, res) =>{
     try{
-        let id = req.params.ticketId;
-        res.status(200).send(await ticketPreformer.Delete(id));
+        let params = {};
+        params.id = req.params.ticketId;
+        res.status(200).send(await ticketPreformer.Delete(params));
     }
-    catch(err){
-        console.log(err);
-        res.status(400).send(err);
+    catch (err) {
+        if (err instanceof UserInvalidInputError) {
+            res.status(404).send({ errorContent: err.message });
+        }
+        else {
+            res.status(500).send({ errorContent: err.message });
+        }
     }
 })
 
 router.put('/:ticketId', async (req, res) => {
-    let params = {};
-    params['TicketId'] = req.params.ticketId;
-    if(req.query.statusId) {params['StatusId'] = req.query.statusId;};
-    if(req.query.handlerGroupId) {params['HandlerGroupId'] = req.query.handlerGroupId;};
-    if(req.query.costumerGroupId) {params['CostumerGroupId'] = req.query.costumerGroupId;};
-    if(req.query.roomNumber) {params['RoomNumber'] = req.query.roomNumber;};
-    if(req.query.description) {params['Description'] = req.query.description;};
-    res.status(200).send(await ticketPreformer.Put(params));
+    try
+    {
+        let params = {};
+        params['TicketId'] = req.params.ticketId;
+        if(req.query.handlerGroupId) {params['HandlerGroupId'] = req.query.handlerGroupId;};
+        if(req.query.costumerGroupId) {params['CostumerGroupId'] = req.query.costumerGroupId;};
+        if(req.query.roomNumber) {params['RoomNumber'] = req.query.roomNumber;};
+        if(req.query.description) {params['Description'] = req.query.description;};
+        if(req.query.statusId) {
+            if(req.role == "MaintenancePerson"){
+                params['StatusId'] = req.query.statusId;
+            }
+            else{
+                res.status(403).send("unauthorized to change status");
+            }
+        }
+        res.status(200).send(await ticketPreformer.Put(params));
+    }
+    catch (err) {
+        if (err instanceof UserInvalidInputError) {
+            res.status(404).send({ errorContent: err.message });
+        }
+        else {
+            res.status(500).send({ errorContent: err.message });
+        }
+    }
 })
-
-
-// router.post('/:ticketId/Comment',async (req, res) =>{
-//     try{
-//         let ticketId = req.params.ticketId;
-//         let body = req.body;
-//         let comment = body.comment;
-//         let userName = body.userName;
-//         console.log("request params:")
-//         console.log(req.params)
-//         console.log("params:")
-//         console.log(`ticketId = ${ticketId}    comment = ${comment}    userName = ${userName}`)
-//         res.status(200).send(await commentPreformer.Insert(ticketId, comment, userName));
-//     }
-//     catch(err){
-//         console.log(err);
-//         res.status(400).send(err);
-//     }
-// })
 
 module.exports = router;

@@ -1,5 +1,7 @@
 const express = require('express');
 const ticketsGetter = require('../BLL/TicketsGetter');
+let { UserInvalidInputError} = require('commonframework');
+
 
 const router = express.Router();
 
@@ -17,9 +19,13 @@ router.get('/',async (req, res) =>{
         res.status(200).send(await ticketsGetter.Get(params));
     }
 
-    catch(err){
-        console.log(err);
-        res.status(400).send(err);
+    catch (err) {
+        if (err instanceof UserInvalidInputError) {
+            res.status(404).send({ errorContent: err.message });
+        }
+        else {
+            res.status(500).send({ errorContent: err.message });
+        }
     }
 })
 
