@@ -58,7 +58,7 @@ router.put('/:ticketId', async (req, res) => {
                 params['StatusId'] = req.query.statusId;
             }
             else{
-                res.status(403).send("unauthorized to change status");
+                throw new TypeError("unauthorized to change status")
             }
         }
         res.status(200).send(await ticketPreformer.Put(params));
@@ -67,7 +67,9 @@ router.put('/:ticketId', async (req, res) => {
         if (err instanceof UserInvalidInputError) {
             res.status(404).send({ errorContent: err.message });
         }
-        else {
+        else if(err instanceof TypeError){
+            res.status(403).send({errorContent: err.message});
+        }else {
             res.status(500).send({ errorContent: err.message });
         }
     }
