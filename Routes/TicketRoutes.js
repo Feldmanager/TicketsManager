@@ -55,7 +55,7 @@ router.put('/:ticketId', async (req, res) => {
         if(req.query.roomNumber) {params['RoomNumber'] = req.query.roomNumber;};
         if(req.query.description) {params['Description'] = req.query.description;};
         if(req.query.statusId) {
-            if(req.role == "MaintenancePerson"){
+            if(req.role == "MaintenancePerson" || req.role == "Admin"){
                 params['StatusId'] = req.query.statusId;
             }
             else{
@@ -65,6 +65,7 @@ router.put('/:ticketId', async (req, res) => {
         res.status(200).send(await ticketPreformer.Put(params));
     }
     catch (err) {
+        console.log(err);
         if (err instanceof UserInvalidInputError) {
             res.status(404).send({ errorContent: err.message });
         }
