@@ -54,6 +54,7 @@ router.put('/:ticketId', async (req, res) => {
         if(req.query.costumerGroupId) {params['CostumerGroupId'] = req.query.costumerGroupId;};
         if(req.query.roomNumber) {params['RoomNumber'] = req.query.roomNumber;};
         if(req.query.description) {params['Description'] = req.query.description;};
+        if(req.query.handlerName) {params['HandlerName'] = req.query.handlerName;};
         if(req.query.statusId) {
             if(req.role == "MaintenancePerson" || req.role == "Admin"){
                 params['StatusId'] = req.query.statusId;
